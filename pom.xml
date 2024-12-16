@@ -4,9 +4,1056 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <!-- https://maven.apache.org/pom/asf/ -->
+    <groupId>org.apache</groupId>
+    <artifactId>apache</artifactId>
+    <version>32</version>
+  </parent>
+
   <groupId>com.ludo</groupId>
   <artifactId>ludo-root</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
+
+  <name>Ludo: Root</name>
+  <description>Ludo aggregation module.</description>
+  <inceptionYear>2024</inceptionYear>
+
+  <modules>
+    <module>mods/_bom</module>
+    <module>mods/plugin</module>
+    <module>mods/product</module>
+  </modules>
+
+  <organization>
+    <name>ludo</name>
+    <url>https://github.com/ludo-game</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>${ludo.author.id}</id>
+      <name>${ludo.author.name}</name>
+      <email>${ludo.author.email}</email>
+      <organization>${project.organization.name}</organization>
+      <organizationUrl>${project.organization.url}</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>${ludo.author.timezone}}</timezone>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Maven -->
+    <!-- https://maven.apache.org/plugins/maven-compiler-plugin/examples/set-compiler-release.html -->
+    <maven.compiler.release>21</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+    <maven.compiler.parameters>true</maven.compiler.parameters>
+    <maven.compiler.failOnWarning>true</maven.compiler.failOnWarning>
+    <!-- https://quarkus.io/guides/maven-tooling#configuration-reference -->
+    <!--suppress UnresolvedMavenProperty -->
+    <maven.root.basedir>${maven.multiModuleProjectDirectory}
+    </maven.root.basedir>
+
+    <!-- Authorship -->
+    <ludo.version>${project.version}</ludo.version>
+    <ludo.author.id>dhsrocha</ludo.author.id>
+    <ludo.author.name>${project.organization.name}</ludo.author.name>
+    <ludo.author.email>ludo.dev@gmail.com</ludo.author.email>
+    <ludo.author.version>${project.version}</ludo.author.version>
+    <ludo.author.inceptionYear>${project.inceptionYear}
+    </ludo.author.inceptionYear>
+    <ludo.author.timezone>Europe/Lisbon</ludo.author.timezone>
+
+    <!-- Path -->
+    <ludo.path.checkstyle>
+      ${project.build.directory}${file.separator}maven-checkstyle
+    </ludo.path.checkstyle>
+
+    <!-- Path -->
+    <ludo.path.check>
+      ${project.build.directory}${file.separator}maven-checkstyle
+    </ludo.path.check>
+    <ludo.path.props>ludo.pom.properties</ludo.path.props>
+
+    <!-- Jar Signing -->
+    <ludo.sign.verbose>true</ludo.sign.verbose>
+    <ludo.sign.alias>${project.organization.name}-${ludo.author.id}-dev
+    </ludo.sign.alias>
+    <ludo.sign.jks.type>JKS</ludo.sign.jks.type>
+    <ludo.sign.jks.pass>change-it</ludo.sign.jks.pass>
+    <ludo.sign.cert.validity>10</ludo.sign.cert.validity>
+    <ludo.sign.certs>false</ludo.sign.certs>
+    <ludo.sign.alg.gen.sign>SHA256withRSA</ludo.sign.alg.gen.sign>
+    <ludo.sign.alg.gen.key>RSA</ludo.sign.alg.gen.key>
+    <ludo.sign.alg.gen.size>4096</ludo.sign.alg.gen.size>
+    <ludo.sign.jks.path>
+      ${maven.root.basedir}${file.separator}target${file.separator}maven-keystore${file.separator}${project.organization.name}.keystore
+    </ludo.sign.jks.path>
+
+    <!-- Testing -->
+    <skipTests>true</skipTests>
+    <path.cov>${project.build.directory}/jacoco-exec</path.cov>
+    <path.cov.exec.ut>ut.exec</path.cov.exec.ut>
+    <path.cov.exec.it>it.exec</path.cov.exec.it>
+    <path.cov.exec.merged>merged.exec</path.cov.exec.merged>
+
+    <!-- Profiles-->
+    <os.unix>ludo-os-unix</os.unix>
+    <os.win>ludo-os-win</os.win>
+
+    <!-- Release -->
+    <release.prefix>parsed</release.prefix>
+    <release.task.parse>ludo-helper--parse-version</release.task.parse>
+    <release.task.prepare>ludo-release--prepare</release.task.prepare>
+    <release.tasks>
+      build-helper:parse-version@${release.task.parse}
+      release:clean
+      release:prepare@${release.task.prepare}
+      release:perform
+    </release.tasks>
+
+    <!-- ::: Versions ::: -->
+
+    <!-- General -->
+    <version.log4j>3.0.0-beta3</version.log4j>
+    <version.plugin.wrapper>3.3.2</version.plugin.wrapper>
+    <version.plugin.wrapper.maven>3.9.9</version.plugin.wrapper.maven>
+    <version.plugin.exec>3.5.0</version.plugin.exec>
+    <version.plugin.versions>2.18.0</version.plugin.versions>
+    <version.plugin.props>1.2.1</version.plugin.props>
+    <!-- Checking -->
+    <version.plugin.checker>3.33.0</version.plugin.checker>
+    <version.plugin.enforcer>3.5.0</version.plugin.enforcer>
+    <version.plugin.fmt>2.25</version.plugin.fmt>
+    <version.plugin.pmd>3.26.0</version.plugin.pmd>
+    <version.plugin.pmd.deps>7.8.0</version.plugin.pmd.deps>
+    <version.plugin.errorprone>2.20.0</version.plugin.errorprone>
+    <version.plugin.checkstyle>3.6.0</version.plugin.checkstyle>
+    <version.plugin.checkstyle.tools>10.21.0</version.plugin.checkstyle.tools>
+    <version.plugin.spotbugs>4.8.6.6</version.plugin.spotbugs>
+    <version.plugin.spotbugs.deps>4.8.6</version.plugin.spotbugs.deps>
+    <version.plugin.spotbugs.find-sec>1.12.0</version.plugin.spotbugs.find-sec>
+    <version.plugin.owasp>8.4.0</version.plugin.owasp>
+    <version.plugin.license>2.5.0</version.plugin.license>
+    <!-- Test -->
+    <version.plugin.test.unit>3.5.2</version.plugin.test.unit>
+    <version.plugin.test.mutation>1.17.3</version.plugin.test.mutation>
+    <version.plugin.test.mutation.dep>1.2.1</version.plugin.test.mutation.dep>
+    <version.plugin.liquibase>4.23.0</version.plugin.liquibase>
+    <version.plugin.jacoco>0.8.12</version.plugin.jacoco>
+    <!-- Packaging -->
+    <version.plugin.keytool>1.7</version.plugin.keytool>
+    <version.plugin.jlink>3.2.0</version.plugin.jlink>
+    <version.plugin.jarsigner>3.1.0</version.plugin.jarsigner>
+    <!-- Deploy and release -->
+    <version.plugin.release>3.0.1</version.plugin.release>
+    <version.plugin.assembly>3.6.0</version.plugin.assembly>
+    <version.plugin.deploy>3.1.1</version.plugin.deploy>
+  </properties>
+
+  <build>
+    <!-- Useful to check enrolled plugins to execute:
+    ./mvnw help:active-profiles
+    ./mvnw fr.jcgay.maven.plugins:buildplan-maven-plugin:list \
+           -pl :ludo-service \
+           -Dbuildplan.tasks=clean,install,deploy
+    -->
+    <defaultGoal>clean test install</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <!-- https://www.mojohaus.org/properties-maven-plugin -->
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <version>${version.plugin.props}</version>
+        </plugin>
+        <!-- ::: ::: ::: ::: -->
+        <!-- :: Execution :: -->
+        <!-- ::: ::: ::: ::: -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${version.plugin.exec}</version>
+        </plugin>
+        <!-- ::: ::: ::: ::: -->
+        <!-- ::: Testing ::: -->
+        <!-- ::: ::: ::: ::: -->
+        <plugin>
+          <!-- https://maven.apache.org/surefire/maven-surefire-plugin -->
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.plugin.test.unit}</version>
+          <executions>
+            <execution>
+              <id>default-test</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <!-- https://maven.apache.org/surefire/maven-failsafe-plugin -->
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${version.plugin.test.unit}</version>
+        </plugin>
+        <plugin>
+          <!-- https://pitest.org/quickstart/maven -->
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>${version.plugin.test.mutation}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.pitest</groupId>
+              <artifactId>pitest-junit5-plugin</artifactId>
+              <version>${version.plugin.test.mutation.dep}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <!-- https://www.eclemma.org/jacoco/trunk/doc/maven.html -->
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${version.plugin.jacoco}</version>
+          <configuration combine.children="append">
+            <fileSets>
+              <fileSet>
+                <directory>${path.cov}</directory>
+                <includes>
+                  <include>${path.cov.exec.ut}</include>
+                  <include>${path.cov.exec.it}</include>
+                </includes>
+              </fileSet>
+            </fileSets>
+            <rules>
+              <rule>
+                <element>BUNDLE</element>
+                <limits>
+                  <limit>
+                    <counter>LINE</counter>
+                    <value>COVEREDRATIO</value>
+                    <minimum>0.8</minimum>
+                  </limit>
+                  <limit>
+                    <counter>BRANCH</counter>
+                    <value>COVEREDRATIO</value>
+                    <minimum>0.6</minimum>
+                  </limit>
+                </limits>
+              </rule>
+            </rules>
+          </configuration>
+        </plugin>
+        <plugin>
+          <!-- https://maven.apache.org/surefire/maven-surefire-report-plugin -->
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${version.plugin.test.unit}</version>
+        </plugin>
+        <!-- ::: :: :: ::: -->
+        <!-- : Packaging : -->
+        <!-- ::: :: :: ::: -->
+        <plugin>
+          <!-- https://maven.apache.org/plugins/maven-jar-plugin -->
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <!-- https://maven.apache.org/shared/maven-archiver/examples/manifest.html#Adding_Implementation_And_Specification_Details -->
+              <manifest>
+                <addDefaultImplementationEntries>true
+                </addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true
+                </addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <!-- https://maven.apache.org/plugins/maven-jarsigner-plugin -->
+          <!-- https://docs.oracle.com/en/java/javase/20/docs/specs/man/jarsigner.html -->
+          <!-- https://maven.apache.org/guides/mini/guide-encryption.html -->
+          <artifactId>maven-jarsigner-plugin</artifactId>
+          <version>${version.plugin.jarsigner}</version>
+          <!-- -->
+          <executions>
+            <execution>
+              <id>ludo-jarsigner--sign</id>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+              <configuration>
+                <workingDirectory>${maven.root.basedir}</workingDirectory>
+                <!-- Signing -->
+                <verbose>${ludo.sign.verbose}</verbose>
+                <alias>${ludo.sign.alias}</alias>
+                <!-- Key -->
+                <keypass>${ludo.sign.jks.pass}</keypass>
+                <keystore>${ludo.sign.jks.path}</keystore>
+                <!-- Store -->
+                <storepass>${ludo.sign.jks.pass}</storepass>
+                <storetype>${ludo.sign.jks.type}</storetype>
+              </configuration>
+            </execution>
+            <execution>
+              <id>ludo-jarsigner--verify</id>
+              <goals>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <!-- https://maven.apache.org/plugins/maven-jlink-plugin -->
+          <artifactId>maven-jlink-plugin</artifactId>
+          <version>${version.plugin.jlink}</version>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <!-- https://maven.apache.org/wrapper/maven-wrapper-plugin -->
+        <artifactId>maven-wrapper-plugin</artifactId>
+        <version>${version.plugin.wrapper}</version>
+        <configuration>
+          <mavenVersion>${version.plugin.wrapper.maven}</mavenVersion>
+        </configuration>
+        <!-- Do not write piped execs here since this is supposed to be built by the wrapper! -->
+      </plugin>
+      <plugin>
+        <!-- https://www.mojohaus.org/versions-maven-plugin -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${version.plugin.versions}</version>
+        <configuration>
+          <allowSnapshots>false</allowSnapshots>
+          <allowDowngrade>true</allowDowngrade>
+        </configuration>
+      </plugin>
+      <!-- ::: ::: : ::: ::: -->
+      <!-- :: :: Check :: :: -->
+      <!-- ::: ::: : ::: ::: -->
+      <plugin>
+        <!-- https://maven.apache.org/enforcer/maven-enforcer-plugin -->
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${version.plugin.enforcer}</version>
+        <configuration>
+          <failFast>true</failFast>
+          <rules>
+            <!-- Versions -->
+            <!-- https://maven.apache.org/enforcer/enforcer-rules/requireMavenVersion.html -->
+            <requireMavenVersion>
+              <version>${version.plugin.wrapper.maven}</version>
+            </requireMavenVersion>
+            <!-- https://maven.apache.org/enforcer/enforcer-rules/requireJavaVersion.html -->
+            <requireJavaVersion>
+              <version>${maven.compiler.release}</version>
+            </requireJavaVersion>
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>ludo-enforce--rules</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration combine.self="append" combine.children="append">
+              <rules>
+                <!-- Profiles -->
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/requireActiveProfile.html -->
+                <requireActiveProfile>
+                  <all>false</all>
+                  <message>
+                    At least one of the profiles 'os-unix' and 'os-win' must be
+                    active.
+                  </message>
+                  <profiles>${os.unix},${os.win}</profiles>
+                </requireActiveProfile>
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/requireProfileIdsExist.html -->
+                <requireProfileIdsExist/>
+                <!-- Plugins -->
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html -->
+                <requirePluginVersions>
+                  <banSnapshots>true</banSnapshots>
+                </requirePluginVersions>
+                <!-- Dependencies -->
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/requireUpperBoundDeps.html -->
+                <requireUpperBoundDeps>
+                  <uniqueVersions>true</uniqueVersions>
+                </requireUpperBoundDeps>
+                <!-- dependencyConvergence/ -->
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/banDuplicatePomDependencyVersions.html -->
+                <banDuplicatePomDependencyVersions/>
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/bannedPlugins.html -->
+                <bannedPlugins>
+                  <level>ERROR</level>
+                </bannedPlugins>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ludo-enforce--module-rules</id>
+            <inherited>false</inherited>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <failFast>true</failFast>
+              <rules>
+                <!-- Reactor -->
+                <!-- https://maven.apache.org/enforcer/enforcer-rules/reactorModuleConvergence.html -->
+                <reactorModuleConvergence/>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- https://github.com/spotify/fmt-maven-plugin -->
+        <groupId>com.spotify.fmt</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <version>${version.plugin.fmt}</version>
+        <executions>
+          <execution>
+            <id>ludo-fmt--format</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>format</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- https://maven.apache.org/plugins/maven-pmd-plugin -->
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${version.plugin.pmd}</version>
+        <configuration>
+          <printFailingErrors>true</printFailingErrors>
+          <targetJdk>21</targetJdk>
+        </configuration>
+        <executions>
+          <execution>
+            <id>ludo-pmd--check</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-core</artifactId>
+            <version>${version.plugin.pmd.deps}</version>
+          </dependency>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-java</artifactId>
+            <version>${version.plugin.pmd.deps}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin -->
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${version.plugin.checkstyle}</version>
+        <configuration>
+          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>warning</violationSeverity>
+          <sourceDirectories>${project.build.sourceDirectory}
+          </sourceDirectories>
+          <resourceIncludes>**/*.properties,**/*.json,**/*.yml
+          </resourceIncludes>
+          <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/checkstyle-mojo.html#outputfile -->
+          <outputFile>
+            ${ludo.path.checkstyle}${file.separator}checkstyle-result.xml
+          </outputFile>
+          <rulesFiles>
+            ${ludo.path.checkstyle}${file.separator}checkstyle-rules.xml
+          </rulesFiles>
+          <cacheFile>
+            ${ludo.path.checkstyle}${file.separator}checkstyle-cachefile
+          </cacheFile>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${version.plugin.checkstyle.tools}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>ludo-checkstyle--check-with-google-rules</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <!-- https://checkstyle.sourceforge.io/google_style.html -->
+              <configLocation>google_checks.xml</configLocation>
+              <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/inline-checker-config.html -->
+            </configuration>
+          </execution>
+          <!-- -->
+          <execution>
+            <id>ludo-checkstyle--check-line-endings</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <checkstyleRules>
+                <module name="Checker">
+                  <!-- https://checkstyle.sourceforge.io/config_regexp.html#RegexpMultiline -->
+                  <module name="RegexpMultiline">
+                    <property name="format" value="(?s:\r\n.*)"/>
+                    <property name="maximum" value="0"/>
+                    <property name="message"
+                              value="Do not use Windows line endings"/>
+                  </module>
+                </module>
+              </checkstyleRules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- https://spotbugs.github.io -->
+        <!-- https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html -->
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${version.plugin.spotbugs}</version>
+        <configuration>
+          <plugins>
+            <plugin>
+              <!-- https://spotbugs.readthedocs.io/en/stable/maven.html#integrate-find-security-bugs-into-spotbugs-maven-plugin -->
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>${version.plugin.spotbugs.find-sec}</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <!-- https://spotbugs.readthedocs.io/en/stable/maven.html#add-spotbugs-maven-plugin-to-your-pom-xml -->
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${version.plugin.spotbugs.deps}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>ludo-spotbugs--check</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>spotbugs</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- https://www.mojohaus.org/license-maven-plugin -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>${version.plugin.license}</version>
+        <executions>
+          <execution>
+            <id>ludo-license--check-file-header</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check-file-header</goal>
+            </goals>
+            <configuration>
+              <!-- https://web.archive.org/web/20220712000832/http://answers.google.com/answers/threadview/id/439136.html -->
+              <licenseName>lgpl_v3</licenseName>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${version.log4j}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- ::: ::: : ::: ::: -->
+    <!-- ::: OS-based  ::: -->
+    <!-- ::: ::: : ::: ::: -->
+    <profile>
+      <id>ludo-os-win</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+        </os>
+      </activation>
+      <properties>
+        <mvnw>mvnw.cmd</mvnw>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-enforce--${os.win}-x64</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration combine.self="append">
+                  <rules>
+                    <requireOS>
+                      <family>windows</family>
+                      <arch>amd64</arch>
+                    </requireOS>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-os-unix</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <mvnw>mvnw</mvnw>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-enforce--${os.unix}-x64</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration combine.self="append">
+                  <rules>
+                    <requireOS>
+                      <family>unix</family>
+                      <arch>amd64</arch>
+                    </requireOS>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- ::: ::: ::: ::: -->
+    <!-- :::  check  ::: -->
+    <!-- ::: ::: ::: ::: -->
+    <profile>
+      <id>ludo-check-optionals</id>
+      <activation>
+        <property>
+          <name>ludo.check.optionals.disable</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-checkstyle--warn-pending-todos</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <violationSeverity>warning</violationSeverity>
+                  <failOnViolation>false</failOnViolation>
+                  <failsOnError>false</failsOnError>
+                  <checkstyleRules>
+                    <module name="Checker">
+                      <!-- https://checkstyle.sourceforge.io/config_regexp.html#RegexpMultiline -->
+                      <module name="RegexpMultiline">
+                        <property name="format" value="TODO.*"/>
+                        <property name="message"
+                                  value="Do not leave pending TODO commentaries"/>
+                      </module>
+                    </module>
+                  </checkstyleRules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- ::: ::: ::: ::: -->
+    <!-- ::: Testing ::: -->
+    <!-- ::: ::: ::: ::: -->
+    <profile>
+      <id>ludo-with-ut</id>
+      <!-- Prepares an agent, generates the exec file, produces reports and then checks it. -->
+      <properties>
+        <skipTests>false</skipTests>
+        <cov.args.ut>cov.args.ut.value</cov.args.ut>
+      </properties>
+      <build>
+        <defaultGoal>clean jacoco:prepare-agent test surefire:test
+          jacoco:check
+        </defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <argLine>@{${cov.args.ut}}</argLine>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <configuration>
+              <!-- https://www.jacoco.org/jacoco/trunk/doc/prepare-agent-integration-mojo.html#propertyName -->
+              <propertyName>${cov.args.ut}</propertyName>
+              <dataFile>${path.cov}/${path.cov.exec.ut}</dataFile>
+              <!-- https://www.jacoco.org/jacoco/trunk/doc/prepare-agent-integration-mojo.html#destFile -->
+              <destFile>${path.cov}/${path.cov.exec.ut}</destFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-with-it</id>
+      <!-- Prepares an agent, generates the exec file, produces reports and then checks it. -->
+      <properties>
+        <skipTests>false</skipTests>
+        <cov.args.it>cov.args.it.value</cov.args.it>
+      </properties>
+      <build>
+        <defaultGoal>
+          clean jacoco:prepare-agent integration-test failsafe:test jacoco:check
+        </defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <argLine>@{${cov.args.it}}</argLine>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <configuration>
+              <!-- https://www.jacoco.org/jacoco/trunk/doc/prepare-agent-integration-mojo.html#propertyName -->
+              <propertyName>${cov.args.it}</propertyName>
+              <dataFile>${path.cov}/${path.cov.exec.it}</dataFile>
+              <!-- https://www.jacoco.org/jacoco/trunk/doc/prepare-agent-integration-mojo.html#destFile -->
+              <destFile>${path.cov}/${path.cov.exec.it}</destFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-with-mt</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-mutation--coverage</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-with-coverage</id>
+      <build>
+        <defaultGoal>
+          jacoco:merge jacoco:report groovy:execute@ludo-groovy--jacoco-reports
+        </defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <configuration>
+              <dataFile>${path.cov}/${path.cov.exec.merged}</dataFile>
+              <destFile>${path.cov}/${path.cov.exec.merged}</destFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- ::: ::: ::: ::: -->
+    <!-- :: Packaging :: -->
+    <!-- ::: ::: ::: ::: -->
+    <profile>
+      <id>ludo-sign-jar</id>
+      <activation>
+        <property>
+          <name>ludo.sign.disable</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <!-- https://github.com/mojohaus/keytool -->
+              <!-- https://www.mojohaus.org/keytool/keytool-maven-plugin -->
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>keytool-maven-plugin</artifactId>
+              <version>${version.plugin.keytool}</version>
+              <configuration>
+                <alias>${ludo.sign.alias}</alias>
+                <validity>${ludo.sign.cert.validity}</validity>
+                <keypass>${ludo.sign.jks.pass}</keypass>
+                <storepass>${ludo.sign.jks.pass}</storepass>
+                <keystore>${ludo.sign.jks.path}</keystore>
+                <!-- https://docs.oracle.com/cd/E24191_01/common/tutorials/authz_cert_attributes.html -->
+                <dname>
+                  cn=${ludo.sign.alias},
+                  ou=${project.organization.name},
+                  o=${project.organization.name},
+                  L=${ludo.author.timezone},
+                  ST=${ludo.author.timezone},
+                  c=${user.country}
+                </dname>
+                <sigalg>${ludo.sign.alg.gen.sign}</sigalg>
+                <keyalg>${ludo.sign.alg.gen.key}</keyalg>
+                <keysize>${ludo.sign.alg.gen.size}</keysize>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>keytool-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-keytool--keyPair</id>
+                <goals>
+                  <goal>generateKeyPair</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <inherited>false</inherited>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-jarsigner-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-jarsigner--sign</id>
+                <phase>none</phase>
+                <inherited>false</inherited>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>ludo-jarsigner--verify</id>
+                <phase>none</phase>
+                <inherited>false</inherited>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-sign-jar-external</id>
+      <properties>
+        <ludo.sign.verbose>false</ludo.sign.verbose>
+        <ludo.sign.alias>${ludo.author.id}-prod</ludo.sign.alias>
+        <!--suppress UnresolvedMavenProperty -->
+        <ludo.sign.keystore.pass>${ludo.ext.sign.keystore.pass}
+        </ludo.sign.keystore.pass>
+        <!--suppress UnresolvedMavenProperty -->
+        <ludo.sign.keystore.path>${ludo.ext.sign.keystore.path}
+        </ludo.sign.keystore.path>
+        <ludo.sign.certs>false</ludo.sign.certs>
+        <ludo.sign.cert.validity>30</ludo.sign.cert.validity>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ludo-enforcer--enforce-require-props--external-keystore</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireProperty>
+                      <!--suppress UnresolvedMavenProperty -->
+                      <property>${ludo.ext.sign.keystore.pass}</property>
+                      <message>You must set a "{ludo.ext.sign.keystore.pass}"
+                        property!
+                      </message>
+                    </requireProperty>
+                    <requireProperty>
+                      <!--suppress UnresolvedMavenProperty -->
+                      <property>${ludo.ext.sign.keystore.path}</property>
+                      <message>You must set a "{ludo.ext.sign.keystore.path}"
+                        property!
+                      </message>
+                    </requireProperty>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- ::: ::: ::: ::: -->
+    <!-- ::: Release ::: -->
+    <!-- ::: ::: ::: ::: -->
+    <profile>
+      <id>ludo-release-version-major</id>
+      <build>
+        <defaultGoal>${release.tasks}</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>${release.task.prepare}</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>prepare</goal>
+                </goals>
+                <configuration>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <releaseVersion>${parsed.nextMajorVersion}.0.0
+                  </releaseVersion>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <developmentVersion>
+                    ${parsed.nextMajorVersion}.0.0-${parsed.qualifier}
+                  </developmentVersion>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-release-version-minor</id>
+      <build>
+        <defaultGoal>${release.tasks}</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>${release.task.prepare}</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>prepare</goal>
+                </goals>
+                <configuration>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <releaseVersion>
+                    ${parsed.majorVersion}.${parsed.nextMinorVersion}.0
+                  </releaseVersion>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <developmentVersion>
+                    ${parsed.majorVersion}.${parsed.nextMinorVersion}.0-${parsed.qualifier}
+                  </developmentVersion>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- -->
+    <profile>
+      <id>ludo-release-version-patch</id>
+      <build>
+        <defaultGoal>${release.tasks}</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>${release.task.prepare}</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>prepare</goal>
+                </goals>
+                <configuration>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <releaseVersion>
+                    ${parsed.majorVersion}.${parsed.minorVersion}.${parsed.nextIncrementalVersion}
+                  </releaseVersion>
+                  <!--suppress UnresolvedMavenProperty -->
+                  <developmentVersion>
+                    ${parsed.majorVersion}.${parsed.minorVersion}.${parsed.nextIncrementalVersion}-${parsed.qualifier}
+                  </developmentVersion>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- ::: ::: ::: ::: ::: ::: ::: -->
+    <!-- ::: Development Support ::: -->
+    <!-- ::: ::: ::: ::: ::: ::: ::: -->
+    <profile>
+      <id>ludo-dep-update</id>
+      <build>
+        <defaultGoal>
+          versions:update-properties
+          versions:use-latest-versions
+          versions:display-plugin-updates
+        </defaultGoal>
+      </build>
+    </profile>
+    <!-- -->
+  </profiles>
 
 </project>
