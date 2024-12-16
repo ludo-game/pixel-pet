@@ -1,0 +1,2 @@
+module ludo.plugin {
+}
