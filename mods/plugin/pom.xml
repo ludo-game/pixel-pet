@@ -17,6 +17,10 @@
   <name>Ludo: Plugin Aggregator</name>
   <description>Consolidates modules which produce Maven plugins.</description>
 
+  <modules>
+    <module>mods/bundler</module>
+  </modules>
+
   <dependencyManagement>
     <dependencies>
       <dependency>

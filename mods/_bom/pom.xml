@@ -39,6 +39,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- Ludo -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>ludo-bundler-maven-plugin</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

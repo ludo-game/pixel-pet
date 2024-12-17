@@ -380,6 +380,10 @@
                 <!-- https://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html -->
                 <requirePluginVersions>
                   <banSnapshots>true</banSnapshots>
+                  <unCheckedPluginList>
+                    <!-- TODO Make it agnostic -->
+                    ${project.groupId}:ludo-bundler-maven-plugin
+                  </unCheckedPluginList>
                 </requirePluginVersions>
                 <!-- Dependencies -->
                 <!-- https://maven.apache.org/enforcer/enforcer-rules/requireUpperBoundDeps.html -->
